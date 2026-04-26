@@ -1,0 +1,31 @@
+{
+  "pose_auc_summary": {
+    "SP+LG": {
+      "auc@5": 19.047375822067263,
+      "auc@10": 37.744019186496736,
+      "auc@20": 58.46708803772926,
+      "mean_matches": 299.99
+    },
+    "DINOv2+LG_zero": {
+      "auc@5": 2.0600712418556215,
+      "auc@10": 7.589211815595627,
+      "auc@20": 15.243227156996728,
+      "mean_matches": 85.93
+    },
+    "DINOv2+LG_trained": {
+      "auc@5": 14.007952225208282,
+      "auc@10": 28.180465072393424,
+      "auc@20": 48.6527154058218,
+      "mean_matches": 244.29
+    }
+  },
+  "descriptor_quality": {
+    "diagonal_cos_sim": 0.9015,
+    "offdiag_cos_sim": 0.6243
+  },
+  "conclusions": [
+    "5 epochs insufficient for full gap closure",
+    "DINOv2 features discriminative (diag_sim=0.90)",
+    "Need 50-100 full-dataset epochs for paper-quality results"
+  ]
+}

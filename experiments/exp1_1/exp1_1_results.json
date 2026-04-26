@@ -1,0 +1,9 @@
+{
+  "num_pairs": 100,
+  "mean_matches": {
+    "superpoint": 329.57,
+    "dinov2_raw": 187.6
+  },
+  "dino_sp_ratio": 0.5692265679521801,
+  "go_no_go": "GO"
+}

@@ -1,0 +1,39 @@
+{
+  "week": 1,
+  "date": "2026-04-20T22:58:01.910756",
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "vram_gb": 11.63067626953125
+  },
+  "deliverables": {
+    "day1_env_setup": true,
+    "day2_baseline_eval": true,
+    "day3_dinov2_extractor": true,
+    "day4_feature_sampling": true,
+    "day5_exp1_1": true,
+    "day5_exp1_2": true,
+    "day6_caching_pipeline": true,
+    "day7_health_check": true
+  },
+  "baselines": {
+    "megadepth1500": {
+      "auc@10": 68.0,
+      "auc@20": 80.8,
+      "auc@5": 50.6
+    }
+  },
+  "exp1_1": {
+    "num_pairs": 100,
+    "mean_matches": {
+      "superpoint": 329.57,
+      "dinov2_raw": 187.6
+    },
+    "dino_sp_ratio": 0.5692265679521801,
+    "go_no_go": "GO"
+  },
+  "exp1_2": {
+    "sp_matches": 1434,
+    "dino_matches": 0,
+    "ratio": 0.0
+  }
+}

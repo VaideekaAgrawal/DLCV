@@ -1,0 +1,100 @@
+{
+  "projection_ablation": {
+    "linear": {
+      "epoch_losses": [
+        3.7877813937680034,
+        2.490254084535893,
+        2.1729514894869504
+      ],
+      "final_loss": 2.1729514894869504
+    },
+    "mlp1": {
+      "epoch_losses": [
+        3.7386658247685274,
+        2.3971930334232,
+        2.0144918901008246
+      ],
+      "final_loss": 2.0144918901008246
+    },
+    "mlp2": {
+      "epoch_losses": [
+        3.639486428875251,
+        2.434779176776041,
+        2.038312871184125
+      ],
+      "final_loss": 2.038312871184125
+    }
+  },
+  "backbone_ablation": {
+    "vits14_reg": {
+      "epoch_losses": [
+        4.446066299540885,
+        2.805332300646993,
+        2.274517894591261
+      ],
+      "final_loss": 2.274517894591261,
+      "input_dim": 384,
+      "avg_step_ms": 307.7968463001635,
+      "n_params": 22058112
+    },
+    "vitb14_reg": {
+      "epoch_losses": [
+        3.9357503868589467,
+        2.488510204641611,
+        2.067741204428193
+      ],
+      "final_loss": 2.067741204428193,
+      "input_dim": 768,
+      "avg_step_ms": 386.50781676273215,
+      "n_params": 86583552
+    }
+  },
+  "pose_auc_200pairs": {
+    "n_pairs": 200,
+    "SP+LG": {
+      "auc": {
+        "auc@5.0": 19.047375822067263,
+        "recall@5.0": 44.0,
+        "auc@10.0": 37.744019186496736,
+        "recall@10.0": 69.0,
+        "auc@20.0": 58.46708803772926,
+        "recall@20.0": 85.0
+      },
+      "mean_matches": 299.99
+    },
+    "DINOv2+LG_zero": {
+      "auc": {
+        "auc@5.0": 2.0600712418556215,
+        "recall@5.0": 6.0,
+        "auc@10.0": 7.589211815595627,
+        "recall@10.0": 18.0,
+        "auc@20.0": 15.243227156996728,
+        "recall@20.0": 31.5
+      },
+      "mean_matches": 85.93
+    },
+    "DINOv2+LG_trained": {
+      "auc": {
+        "auc@5.0": 14.007952225208282,
+        "recall@5.0": 29.5,
+        "auc@10.0": 28.180465072393424,
+        "recall@10.0": 54.0,
+        "auc@20.0": 48.6527154058218,
+        "recall@20.0": 77.0
+      },
+      "mean_matches": 244.29
+    }
+  },
+  "final_config": {
+    "Backbone": "DINOv2-B (vitb14_reg), 86.6M params",
+    "Projection": "MLP-1 (768\u2192256, 1 hidden layer)",
+    "LightGlue": "GlueFactory (9 layers, pretrained SP init)",
+    "Training pairs": "5 epochs \u00d7 full dataset (subset demo: 150 pairs)",
+    "Optimizer": "AdamW  lr=1e-4  wd=1e-4",
+    "Loss": "NLL (nll_balancing=0.5, gamma_f=0.0)",
+    "GT threshold": "pos=3px, neg=5px (in original image space)",
+    "Input resolution": "DINOv2 native 518\u00d7518",
+    "Keypoints": "SuperPoint, max 1024",
+    "Best demo loss": "1.8200 (5 epochs)"
+  }
+}

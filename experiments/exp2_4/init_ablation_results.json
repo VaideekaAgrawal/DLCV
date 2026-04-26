@@ -1,0 +1,22 @@
+{
+  "pretrained_sp_init": {
+    "epoch_losses": [
+      3.627401920773039,
+      2.4769726231594213,
+      2.023076549472425
+    ],
+    "final_loss": 2.023076549472425,
+    "avg_step_ms": 388.63625622435706,
+    "use_pretrained": true
+  },
+  "random_init": {
+    "epoch_losses": [
+      5.809731041825057,
+      4.4201493855290765,
+      3.686022201640494
+    ],
+    "final_loss": 3.686022201640494,
+    "avg_step_ms": 387.8542800877718,
+    "use_pretrained": false
+  }
+}

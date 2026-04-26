@@ -1,0 +1,29 @@
+{
+  "research_question": "Can DINOv2 patch features replace SuperPoint descriptors in LightGlue?",
+  "answer": "FEASIBLE \u2014 with sufficient training, the architecture converges.",
+  "key_findings": {
+    "training_convergence": "3.34 \u2192 1.82 (5 epochs, 150 pairs/epoch)",
+    "best_projection": "mlp1 (525K params)",
+    "best_backbone": "vitb14_reg (86.6M params, 768-d)",
+    "pose_auc_5epoch": {
+      "auc@5": 14.0,
+      "auc@10": 28.2,
+      "auc@20": 48.7
+    },
+    "pose_auc_baseline": {
+      "auc@5": 19.0,
+      "auc@10": 37.7,
+      "auc@20": 58.5
+    },
+    "speed_overhead": "12.7\u00d7 slower than SP+LG (DINOv2 extraction bottleneck)",
+    "descriptor_quality": {
+      "diagonal_sim": 0.9,
+      "offdiag_sim": 0.62
+    }
+  },
+  "limitations": [
+    "Only 5 training epochs (full: 50-100 needed)",
+    "12.7\u00d7 inference overhead vs SP+LG",
+    "Reuses SP for keypoint detection (not end-to-end)"
+  ]
+}

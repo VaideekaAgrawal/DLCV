@@ -1,0 +1,21 @@
+{
+  "benchmark": "HPatches (116 sequences, 5 pairs each = 580 pairs)",
+  "metric": "Homography AUC@5px (%)",
+  "results": {
+    "SP+LG_baseline": {"all": 48.6, "illum": 63.8, "viewpoint": 34.0},
+    "fusion_best_p1": {"all": 43.8, "illum": 59.3, "viewpoint": 26.8, "checkpoint": "best_p1.pt", "note": "Phase 1 only (fusion trained, LG frozen)"},
+    "fusion_p2_e05": {"all": 46.1, "illum": 62.9, "viewpoint": 29.8, "checkpoint": "p2_e05.pt", "note": "Phase 2 epoch 5 (best before overfitting)"},
+    "fusion_best_p2": {"all": 6.1, "illum": 11.9, "viewpoint": 0.5, "checkpoint": "best_model.pt", "note": "Phase 2 best val NLL — but OVERFIT, terrible on HPatches"}
+  },
+  "analysis": {
+    "key_finding": "Phase 2 end-to-end training overfits heavily on MegaDepth-1500 (only 1200 train pairs). Best HPatches performance is at P2 epoch 5.",
+    "gap_to_baseline": "2.5pp (46.1 vs 48.6) — fusion slightly hurts on HPatches but adds semantic robustness potential",
+    "phase2_overfitting": "Val NLL improves (0.86→0.75) but HPatches degrades (46.1→6.1). MegaDepth NLL doesn't correlate with HPatches homography AUC.",
+    "recommendations": [
+      "Use stronger regularization (dropout, weight decay) in Phase 2",
+      "Early stopping based on HPatches validation, not MegaDepth NLL",
+      "More training data (full MegaDepth, not 1500 subset)",
+      "Freeze more LG layers in Phase 2 (only finetune last 2-3 transformer blocks)"
+    ]
+  }
+}

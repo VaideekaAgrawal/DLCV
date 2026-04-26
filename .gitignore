@@ -1,0 +1,94 @@
+# .gitignore for DINOv2+LightGlue research project
+# ─────────────────────────────────────────────────
+# Rule of thumb: commit CODE + DOCS + CONFIGS + small result JSONs.
+#                DO NOT commit: data, model weights, caches, logs, envs.
+
+# =============================================================================
+# DATASETS — never commit (too large, download via scripts/download_data.sh)
+# =============================================================================
+data/
+glue-factory/data/
+LightGlue/data/
+*.h5
+*.hdf5
+*.npz
+
+# =============================================================================
+# MODEL WEIGHTS & CHECKPOINTS — never commit (download/train separately)
+# =============================================================================
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+# Keep experiment JSON result files but not the .pt checkpoints inside them
+experiments/**/*.pt
+experiments/**/*.pth
+
+# =============================================================================
+# FEATURE CACHES
+# =============================================================================
+cache/
+*.h5
+*.hdf5
+
+# =============================================================================
+# PYTHON ENVIRONMENT
+# =============================================================================
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-wheel-metadata/
+*.pyc
+
+# =============================================================================
+# JUPYTER
+# =============================================================================
+.ipynb_checkpoints/
+*.ipynb.bak
+
+# =============================================================================
+# LOGS
+# =============================================================================
+*.log
+wandb/
+runs/
+tensorboard_logs/
+mlruns/
+/tmp/
+
+# =============================================================================
+# OS / EDITOR
+# =============================================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# =============================================================================
+# THIRD-PARTY SUBMODULE BUILD ARTIFACTS (keep source, not compiled artefacts)
+# =============================================================================
+glue-factory/*.egg-info/
+glue-factory/outputs/
+LightGlue/*.egg-info/
+LightGlue/outputs/
+
+# =============================================================================
+# TEMP / BUILD
+# =============================================================================
+*.tmp
+*.temp

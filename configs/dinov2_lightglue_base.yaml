@@ -1,0 +1,93 @@
+# Training configuration: DINOv2-B/14 (frozen) + MLP-2 Projection + LightGlue fine-tune
+# Primary experiment configuration — see plan.md §7 Experiment 2.1
+#
+# Run with:
+#   cd glue-factory
+#   python -m gluefactory.train dinov2_lightglue_base \
+#     --conf ../configs/dinov2_lightglue_base.yaml
+
+model:
+  name: two_view_pipeline
+  extractor:
+    name: gluefactory_nonfree.superpoint      # frozen SuperPoint for keypoints
+    max_num_keypoints: 1024
+    detection_threshold: 0.005
+    nms_radius: 4
+  matcher:
+    name: gluefactory.models.matchers.lightglue
+    input_dim: 256                             # after our projection (from 768)
+    descriptor_dim: 256
+    n_layers: 9
+    num_heads: 4
+    flash: true                                # Flash Attention 2 (PyTorch 2.x native)
+    depth_confidence: 0.95
+    width_confidence: 0.99
+    filter_threshold: 0.1
+
+  # DINOv2 descriptor replacement config (custom extension)
+  dinov2:
+    variant: vitb14_reg                        # DINOv2-B with register tokens
+    freeze: true                               # Frozen during training
+    input_size: 518                            # Native DINOv2 resolution
+    projection:
+      type: mlp2                               # LinearProjection | MLP1 | MLP2 (primary)
+      input_dim: 768
+      hidden_dim: 512
+      output_dim: 256
+
+data:
+  name: megadepth
+  num_workers: 4
+  batch_size: 1                                # RTX 3060 constraint
+  train_num_per_scene: 300
+  max_num_keypoints: 1024
+  # Use ~50 scenes for initial training run (disk budget: see plan.md §17)
+  train_scenes: null                           # null = auto select from data_root
+  img_size: 1024
+  min_overlap: 0.1
+  max_overlap: 1.0
+  # Augmentations
+  augmentation:
+    photometric: true
+    homographic: false
+
+train:
+  seed: 42
+  epochs: 40
+  lr: 1e-4
+  lr_schedule:
+    type: cosine
+    warmup_epochs: 2
+    min_lr: 1e-6
+  optimizer: adamw
+  weight_decay: 1e-4
+  clip_grad: 10.0
+  # Gradient accumulation to simulate batch_size=8
+  gradient_accumulation_steps: 8
+  # Mixed precision
+  mixed_precision: true                        # fp16 AMP
+  # Logging
+  log_every_iter: 100
+  eval_every_iter: 2000
+  save_every_epoch: 5
+
+# LightGlue loss (as in original paper)
+loss:
+  nll_weight: 1.0
+  nll_balancing: 0.5
+
+# Init strategy A: transfer SuperPoint-LightGlue pretrained weights
+# All transformer layers (dim-agnostic at 256) will be transferred;
+# input_proj will be randomly initialized (dim 768→256 vs. 256→256)
+init:
+  from_superpoint_lightglue: true
+  skip_keys:
+    - input_proj
+
+# Evaluation during training
+eval:
+  megadepth1500:
+    every_n_epochs: 5
+
+# Paths (relative to glue-factory/ working directory)
+output_dir: ../experiments/exp2_1_dinov2b_mlp2
